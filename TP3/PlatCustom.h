@@ -15,7 +15,7 @@ using namespace std;
 
 const double FRAIS_CUSTOMISATION = 0.75;
 
-class PlatCustom  {
+class PlatCustom : public Plat {
 public:
 	// constructeur
 	PlatCustom(string nom, double prix , double cout,int nbIngredients );
