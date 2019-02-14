@@ -115,6 +115,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="client.cpp" />
+    <ClCompile Include="clientPrestige.cpp" />
+    <ClCompile Include="clientRegulier.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Plat.cpp" />
+    <ClCompile Include="PlatBio.cpp" />
+    <ClCompile Include="PlatCustom.cpp" />
+    <ClCompile Include="Restaurant.cpp" />
+    <ClCompile Include="Table.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Client.h" />
+    <ClInclude Include="ClientPrestige.h" />
+    <ClInclude Include="ClientRegulier.h" />
+    <ClInclude Include="Menu.h" />
+    <ClInclude Include="Plat.h" />
+    <ClInclude Include="PlatBio.h" />
+    <ClInclude Include="PlatCustom.h" />
+    <ClInclude Include="Restaurant.h" />
+    <ClInclude Include="Table.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
