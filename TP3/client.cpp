@@ -16,22 +16,22 @@ Client::~Client()
 {
 }
 
-StatutClient Client::getStatut()
+StatutClient Client::getStatut() const
 {
 	return statut_;
 }
 
-int Client::getTailleGroupe()
+int Client::getTailleGroupe() const
 {
 	return tailleGroupe_;
 }
 
-string Client::getNom()
+string Client::getNom() const
 {
 	return nom_;
 }
 
-string Client::getPrenom()
+string Client::getPrenom() const
 {
 	return prenom_;
 }

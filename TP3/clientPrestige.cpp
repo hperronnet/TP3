@@ -10,7 +10,7 @@ ClientPrestige::ClientPrestige(string nom, string prenom, int tailleGroupe, int 
 	addresse_ = addresse;
 }
 
-AddressCode ClientPrestige::getAddresseCode()
+AddressCode ClientPrestige::getAddresseCode() const
 {
 	return addresse_;
 }
