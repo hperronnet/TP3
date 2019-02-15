@@ -29,7 +29,7 @@ public:
 
 	//methodes en plus 
 
-	friend ostream& operator<<(ostream& os, const PlatBio& plat); ///
+	friend ostream& operator<<(ostream& os, const PlatBio& plat); 
 
 private:
 	double ecoTaxe_;	

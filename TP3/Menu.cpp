@@ -24,8 +24,15 @@ Menu::Menu(const Menu & menu): type_(menu.type_)
 	///TODO 
 	///Modifier
 	for (unsigned i = 0; i < menu.listePlats_.size(); ++i)
-	{			listePlats_.push_back(new Plat(*menu.listePlats_[i]));
+	{
+			if (*menu.listePlats_[i]->getType == Regulier)
+				listePlats_.push_back(new Plat(*menu.listePlats_[i]));
 
+			else
+				listePlats_.push_back(new Plat(static_cast<Plat>(*menu.listePlats_[i])));
+
+	}
+	return *this;
 	}
 }
 
@@ -46,15 +53,26 @@ ostream& operator<<(ostream& os, const Menu& menu)
 		
 		if(menu.listePlats_[i]->getType()==Regulier)
 			os << "\t" << *menu.listePlats_[i];
-
+	
+		else if(menu.listePlats_[i]->getType() == Bio)
+			os << "\t" << static_cast<PlatBio*>(menu.listePlats_[i]);
+		
+		else if (menu.listePlats_[i]->getType() == Custom)
+			os << "\t" << static_cast<PlatCustom*>(menu.listePlats_[i]);
 	}
-
 	return os;
 }
 
 
 
 Menu& Menu::operator+=(const Plat& plat) {
+	listePlats_.push_back(new Plat(plat));
+	return *this;
+}
+
+// Nouvelle fonction
+
+Menu& Menu::operator+=(const PlatBio& plat) {
 	listePlats_.push_back(new Plat(plat));
 	return *this;
 }
@@ -70,7 +88,14 @@ Menu & Menu::operator=(const Menu & menu)
 		listePlats_.clear();
 
 		for (unsigned i = 0; i < menu.listePlats_.size(); ++i)
-			listePlats_.push_back(new Plat(*menu.listePlats_[i]));
+
+			if (*menu.listePlats_[i]->getType == Regulier)
+				listePlats_.push_back(new Plat(*menu.listePlats_[i]));
+
+			else if (*menu.listePlats_[i]->getType == Bio)
+				listePlats_.push_back(new Plat(*menu.listePlats_[i]));
+
+
 	}
 	return *this;
 }
@@ -110,8 +135,6 @@ void Menu::lireMenu(const string& fichier) {
 
 		string ecotaxeString;
 		double ecoTaxe;
-
-
 		// lecture
 		while (!file.eof()) {
 			std::getline(file, ligne); 
