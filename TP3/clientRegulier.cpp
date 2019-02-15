@@ -1,12 +1,12 @@
 #include "ClientRegulier.h"
 using namespace std;
 
-ClientRegulier::ClientRegulier() : Client()
+ClientRegulier::ClientRegulier()
 {
-	//nom_ = "inconnu";
-	//prenom_ = "inconnu";
-	//statut_ = Occasionnel;
-	//tailleGroupe_ = 0;
+	nom_ = "inconnu";
+	prenom_ = "inconnu";
+	statut_ = Fidele;
+	tailleGroupe_ = 0;
 	nbPoints_ = 0;
 }
 
@@ -15,7 +15,7 @@ ClientRegulier::ClientRegulier(string nom, string prenom, int tailleGroupe, int 
 	//nom_ = nom;
 	//prenom_ = prenom;
 	//tailleGroupe_ = tailleGroupe;
-	statut_ = Occasionnel;
+	statut_ = Fidele;
 	nbPoints_ = nbPoints;
 }
 

@@ -293,6 +293,39 @@ void Restaurant::livrerClient(Client * client, vector<string> commande)
 
 }
 
+double Restaurant::calculerReduction(Client * client, double montant, bool livraison)
+{
+	double reduction = 0.0;			//La réduction doit etre un chiffre négatif : 
+									//Ex : si reduc = -5 --> réduction de 5$
+	if (client->getStatut() == Fidele) {
+		ClientRegulier* clientRegulier = static_cast<ClientRegulier*>(client);
+		if (clientRegulier->getNbPoints() > SEUIL_DEBUT_REDUCTION) {
+			reduction = (-montant) * TAUX_REDUC_REGULIER;
+		}
+	}
+	else if (client->getStatut() == Prestige) {
+		ClientPrestige* clientPrestige = static_cast<ClientPrestige*>(client);
+		reduction = (-montant) * TAUX_REDUC_PRESTIGE;
+		if (livraison & clientPrestige->getNbPoints() < SEUIL_LIVRAISON_GRATUITE) {
+			switch (clientPrestige->getAddresseCode())
+			{
+			case Zone1 :
+				reduction += getFraisTransports(1); //La réduction réduit du montant des frais de transport
+				break;
+			case Zone2 :
+				reduction += getFraisTransports(2);
+				break;
+			case Zone3 :
+				reduction += getFraisTransports(3);
+				break;
+			default:
+				break;
+			}
+		}
+	}
+	return reduction;
+}
+
 
 void Restaurant::lireAdresses(const string & fichier)
 {

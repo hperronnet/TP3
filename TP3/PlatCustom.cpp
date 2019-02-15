@@ -29,7 +29,6 @@ double PlatCustom::calculerSupplement() const
 
 ostream & operator<<(ostream & os, const PlatCustom & plat)
 {
-	os << plat.nom_ << " - " << plat.prix_ << "$ (" << plat.cout_ << "$ pour le restaurant)." <<endl;
-	os << "Contient " << plat.getNbIngredients() << " éléments modifiés pour un total de " << plat.getSupplement << " $." << endl;
+	os << static_cast<Plat>(plat) << endl << "Contient " << plat.getNbIngredients() << " éléments modifiés pour un total de " << plat.getSupplement() << " $." << endl;
 	return os;
 }

@@ -46,10 +46,20 @@ vector<Plat*> Table::getCommande() const
 	return commande_;
 }
 
+Client * Table::getClientPrincipal() const
+{
+	return clientPrincipal_;
+}
+
 
 //setters
 void Table::setId(int id) {
 	id_ = id;
+}
+
+void Table::setClientPrincipal(Client * clientPrincipal)
+{	
+	clientPrincipal_ = clientPrincipal;
 }
 
 
@@ -74,19 +84,44 @@ double Table::getChiffreAffaire() const {
 	///Modifier pour que le chiffre d'Affaire prenne en compte le type de plat
 	///voir Énoncé
 	double chiffre = 0;
-	for (unsigned i = 0; i < commande_.size(); ++i) 
+	for (unsigned i = 0; i < commande_.size(); ++i) {
+		if (commande_[i]->getType() == Bio) {
+			chiffre += commande_[i]->getPrix() + static_cast<PlatBio*>(commande_[i])->getEcoTaxe() - commande_[i]->getCout();
+		}
+		else if (commande_[i]->getType() == Custom) {
+			chiffre += commande_[i]->getPrix() + static_cast<PlatCustom*>(commande_[i])->getSupplement() - commande_[i]->getCout();
+		}
+		else {
 			chiffre += commande_[i]->getPrix() - commande_[i]->getCout();
+		}
+	}
+
 	return chiffre;
 }
 
 //affichage
-
 ostream& operator<<(ostream& os, const Table& table)
 {
 	os << "La table numero " << table.id_;
+	os << "Le client principal est : " << endl << table.getClientPrincipal() << endl;
 	if (table.estOccupee())
 	{
 		os << " est occupee. ";
+		os << "Le client principal est : " << endl << table.getClientPrincipal() << endl;
+
+		os << *table.getClientPrincipal();
+
+		//switch (table.getClientPrincipal()->getStatut())
+		//{
+		//case Prestige : 
+		//	os << static_cast<ClientPrestige*>(table.getClientPrincipal());
+		//  break;
+		//case Fidele :
+		//	os << table.getClientPrincipal();
+		//  break;
+		//default:
+		//	break;
+		//}
 		if (!table.commande_.empty())
 		{
 			os << "Voici la commande passee par les clients : " << endl;

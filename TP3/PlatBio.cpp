@@ -21,5 +21,6 @@ void PlatBio::setEcoTaxe(double ecoTaxe)
 ostream & operator<<(ostream & os, const PlatBio & plat)
 {
 	// TODO: insérer une instruction return ici
-	os << plat << endl  << "Comprend une taxe écologique de :" << plat.getEcoTaxe();
+	os << static_cast<Plat>(plat) << endl  << "Comprend une taxe écologique de :" << plat.getEcoTaxe();
+	return os;
 }
