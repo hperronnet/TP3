@@ -9,6 +9,8 @@
 #include <string>
 #include <iostream>
 
+using namespace std;
+
 enum StatutClient { Occasionnel,Fidele,Prestige };
 
 class Client{
