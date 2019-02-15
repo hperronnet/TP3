@@ -15,7 +15,7 @@ public:
 
 
 	//Accesseurs
-	int getNbPoints();
+	int getNbPoints() const;
 
 
 	//Autres Méthodes
