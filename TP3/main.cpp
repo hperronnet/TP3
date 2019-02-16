@@ -35,6 +35,10 @@ int main() {
 
 	cout << "\t\t\t\t\tLIVRAISONS" << endl;
 	cout << "--------------------------------------------------------------------------------------------------" << endl;
+	vector<string> commandeMarie;
+	commandeMarie.push_back("Pizza");
+	poly.livrerClient(cl6, commandeMarie);
+	poly.livrerClient(cl1, commandeMartin);
 
 	//Livrer les clients Marie et Martins
 
@@ -73,6 +77,7 @@ int main() {
 	poly.libererTable(2);
 	poly.libererTable(3);
 	poly.libererTable(4);
+	//DEBOGER POUR VOIR L'UPDATE DU CHIFFRE D'AFFAIRE
 
 	cout << poly;
 
@@ -94,4 +99,5 @@ int main() {
 	delete cl4;
 	delete cl5;
 
+	system("pause");
 }

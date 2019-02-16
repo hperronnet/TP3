@@ -1,12 +1,9 @@
 #include "ClientRegulier.h"
 using namespace std;
 
-ClientRegulier::ClientRegulier()
+ClientRegulier::ClientRegulier() : Client()
 {
-	nom_ = "inconnu";
-	prenom_ = "inconnu";
 	statut_ = Fidele;
-	tailleGroupe_ = 0;
 	nbPoints_ = 0;
 }
 
@@ -31,6 +28,6 @@ void ClientRegulier::augmenterNbPoints(int bonus)
 
 ostream & operator<<(ostream & os, const ClientRegulier & client)
 {
-	os << client.getNom() << " " << client.getPrenom() << " statut :"<< client.getStatut() << "Possede " << client.getNbPoints() << "Points."<< endl;
+	os << client.getNom() << "  " << client.getPrenom() << " - Statut : Regulier." << " Possede " << client.getNbPoints() << " points."<< endl;
 	return os;
 }

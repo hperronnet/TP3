@@ -9,11 +9,8 @@
 //constructeur 
 
 
-Plat::Plat(string nom , double prix , double cout){
-	nom_ = nom;
-	prix_ = prix; 
-	cout_ = cout; 
-	type_ = Regulier;
+Plat::Plat(string nom , double prix , double cout) : nom_(nom), prix_(prix), cout_(cout), type_(Regulier)
+{
 }
 //getters 
 
@@ -41,9 +38,9 @@ void Plat::setPrix(double prix) {
 	prix_ = prix; 
 }
 
-bool Plat::operator<(const Plat& plat) const 
+bool Plat::operator<=(const Plat& plat) const 
 {
-	return this->prix_ < plat.prix_;
+	return this->prix_ <= plat.prix_;
 }
 
 //autres methodes

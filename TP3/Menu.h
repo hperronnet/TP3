@@ -23,6 +23,7 @@ public:
 	Menu(string fichier, TypeMenu type);
 	///TODO
 	Menu(const Menu& menu); ///A modifier
+	~Menu();
 
 
 	//getters

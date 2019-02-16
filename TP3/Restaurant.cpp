@@ -97,7 +97,17 @@ void Restaurant::libererTable(int id) {
 
 	for (unsigned i = 0; i < tables_.size(); ++i) {
 		if (id == tables_[i]->getId()) {
-			chiffreAffaire_ += tables_[i]->getChiffreAffaire(); 
+			double prixTable = tables_[i]->getChiffreAffaire();
+			Client *client = tables_[i]->getClientPrincipal();
+			double reduction = 0.0;
+			if (id = INDEX_TABLE_LIVRAISON) {
+				reduction = calculerReduction(client, prixTable, true);
+			}
+			else {
+				reduction = calculerReduction(client, prixTable, false);
+			}
+
+			chiffreAffaire_ += tables_[i]->getChiffreAffaire() + reduction; 
 			tables_[i]->libererTable(); 
 			break;
 		}
@@ -154,7 +164,7 @@ void Restaurant::commanderPlat(const string& nom, int idTable,TypePlat type, int
 			case Midi : 
 				plat = menuMidi_->trouverPlat(nom); 
 				break; 
-			case Soir : 
+			case Soir :
 				plat = menuSoir_->trouverPlat(nom); 
 				break; 
 			}
@@ -162,14 +172,22 @@ void Restaurant::commanderPlat(const string& nom, int idTable,TypePlat type, int
 			break;
 		}
 	}
-
+	//cout << "debogage:: " << tables_[index]->getClientPrincipal()->getTailleGroupe();
+	
 	if (plat == nullptr || !tables_[index]->estOccupee()) {
 
 		cout << "Erreur : table vide ou plat introuvable" << endl << endl;
 	}
 	else
 	{
-		tables_[index]->commander(plat);
+		if (type == Custom) {
+			PlatCustom* custom = new PlatCustom(plat->getNom(), plat->getPrix(), plat->getCout(), nbIngredients);
+			//PlatCustom* custom = static_cast<PlatCustom*>(plat);
+			tables_[index]->commander(custom);
+		}
+		else {
+			tables_[index]->commander(plat);
+		}
 
 	}
 
@@ -254,12 +272,7 @@ Restaurant& Restaurant::operator+=(Table* table) {
 	return *this;
 }
 
-Restaurant& Restaurant::operator+=(Table* table) {
-	tables_.push_back(new Table(*table));
-	return *this;
-}
-
-void Restaurant::placerClients(int nbClients) {
+void Restaurant::placerClients(Client* client) {
 
 	/// TODO 
 	///Modifier Afin qu'elle utilise un objet de la classe clients 
@@ -270,7 +283,7 @@ void Restaurant::placerClients(int nbClients) {
 
 
 	for (unsigned i = 0; i < tables_.size(); i++) {
-		if (tables_[i]->getNbPlaces() >= nbClients && !tables_[i]->estOccupee() && tables_[i]->getNbPlaces() < minimum) {
+		if (tables_[i]->getNbPlaces() >= client->getTailleGroupe() && !tables_[i]->estOccupee() && tables_[i]->getNbPlaces() < minimum && tables_[i]->getId() != 5) {
 			indexTable = i;
 			minimum = tables_[i]->getNbPlaces();
 		}
@@ -278,12 +291,36 @@ void Restaurant::placerClients(int nbClients) {
 	if (indexTable == -1) {
 		cout << "Erreur : il n'y a plus/pas de table disponible pour les clients. " << endl;
 	}
-	else
-		tables_[indexTable]->placerClients(nbClients);
+	else {
+		tables_[indexTable]->placerClients(client->getTailleGroupe());
+		tables_[indexTable]->setClientPrincipal(client);
+	}
 }
 
 void Restaurant::livrerClient(Client * client, vector<string> commande)
 {
+	cout << "Livraison en cours... " << endl;
+
+	if (client->getStatut() == Prestige) {
+
+		ClientPrestige* clientPrestige = static_cast<ClientPrestige*>(client);
+		tables_[INDEX_TABLE_LIVRAISON]->setClientPrincipal(clientPrestige);
+		tables_[INDEX_TABLE_LIVRAISON]->placerClients(1);
+
+		for (int i = 0; i < commande.size(); i++) {
+			commanderPlat(commande[i], INDEX_TABLE_LIVRAISON+1);
+		}
+
+		cout << "Statut de la table de livraison : (table numero " << tables_[INDEX_TABLE_LIVRAISON]->getId() << ")." <<endl;
+		cout << *tables_[INDEX_TABLE_LIVRAISON] << endl;
+		cout << "Livraison terminee !" << endl;
+		libererTable(INDEX_TABLE_LIVRAISON+1);
+
+	}
+	else {
+		cout << "Le client " << client->getNom() << " " << client->getPrenom() << " n'est pas admisible a la livraison." << endl;
+	}
+	
 	///TODO
 	///se réferer à l'énoncé 
 	///vérifier que le client a droit aux livraisons
@@ -310,13 +347,13 @@ double Restaurant::calculerReduction(Client * client, double montant, bool livra
 			switch (clientPrestige->getAddresseCode())
 			{
 			case Zone1 :
-				reduction += getFraisTransports(1); //La réduction réduit du montant des frais de transport
+				reduction += getFraisTransports(0); //La réduction réduit du montant des frais de transport
 				break;
 			case Zone2 :
-				reduction += getFraisTransports(2);
+				reduction += getFraisTransports(1);
 				break;
 			case Zone3 :
-				reduction += getFraisTransports(3);
+				reduction += getFraisTransports(2);
 				break;
 			default:
 				break;

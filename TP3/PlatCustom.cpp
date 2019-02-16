@@ -1,10 +1,9 @@
 #include "PlatCustom.h"
 
-PlatCustom::PlatCustom(string nom, double prix, double cout, int nbIngredients) : nbIngredients_(nbIngredients)
+PlatCustom::PlatCustom(string nom, double prix, double cout, int nbIngredients) : Plat(nom,prix,cout), nbIngredients_(nbIngredients)
 {
-	nom_ = nom;
-	prix_ = prix;
-	cout_ = cout;
+	supplement_ = calculerSupplement();
+	type_ = Custom;
 }
 
 int PlatCustom::getNbIngredients() const
@@ -24,11 +23,11 @@ void PlatCustom::setNbIngredients(int nIngredients)
 
 double PlatCustom::calculerSupplement() const
 {
-	return supplement_;
+	return nbIngredients_*FRAIS_CUSTOMISATION;
 }
 
 ostream & operator<<(ostream & os, const PlatCustom & plat)
 {
-	os << static_cast<Plat>(plat) << endl << "Contient " << plat.getNbIngredients() << " éléments modifiés pour un total de " << plat.getSupplement() << " $." << endl;
+	os << static_cast<Plat>(plat) <<  "Contient " << plat.getNbIngredients() << " elements modifies pour un total de " << plat.getSupplement() << " $." << endl;
 	return os;
 }

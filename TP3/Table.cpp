@@ -59,7 +59,17 @@ void Table::setId(int id) {
 
 void Table::setClientPrincipal(Client * clientPrincipal)
 {	
-	clientPrincipal_ = clientPrincipal;
+	if (clientPrincipal->getStatut() == Fidele) {
+		ClientRegulier* regulier = static_cast<ClientRegulier*>(clientPrincipal);
+		clientPrincipal_ = regulier;
+	}
+	if (clientPrincipal->getStatut() == Prestige) {
+		ClientPrestige* prestige = static_cast<ClientPrestige*>(clientPrincipal);
+		clientPrincipal_ = prestige;
+	}
+	else {
+		clientPrincipal_ = clientPrincipal;
+	}
 }
 
 
@@ -103,13 +113,21 @@ double Table::getChiffreAffaire() const {
 ostream& operator<<(ostream& os, const Table& table)
 {
 	os << "La table numero " << table.id_;
-	os << "Le client principal est : " << endl << table.getClientPrincipal() << endl;
 	if (table.estOccupee())
 	{
-		os << " est occupee. ";
-		os << "Le client principal est : " << endl << table.getClientPrincipal() << endl;
+		os << " est occupee. " << endl;
+		if (table.clientPrincipal_->getStatut() == Prestige) {
+			ClientPrestige* prestige = static_cast<ClientPrestige*>(table.clientPrincipal_);
+			os << "Le client principal est : " << *prestige << endl;
+		}
+		else if (table.clientPrincipal_->getStatut() == Fidele) {
+			ClientRegulier* regulier = static_cast<ClientRegulier*>(table.clientPrincipal_);
+			os << "Le client principal est : " << *regulier << endl;
+		}
+		else {
+			os << "Le client principal est : " << *table.clientPrincipal_ << endl;
+		}
 
-		os << *table.getClientPrincipal();
 
 		//switch (table.getClientPrincipal()->getStatut())
 		//{
@@ -127,7 +145,16 @@ ostream& operator<<(ostream& os, const Table& table)
 			os << "Voici la commande passee par les clients : " << endl;
 			for (unsigned i = 0; i < table.commande_.size(); ++i)
 			{
-				os << "\t" << *table.commande_[i];
+				if (table.commande_[i]->getType() == Regulier)
+					os << "\t" << *table.commande_[i];
+				else if (table.commande_[i]->getType() == Bio) {
+					PlatBio* platBio = static_cast<PlatBio*>(table.commande_[i]);
+					os << "\t" << *platBio;
+				}
+				else if (table.commande_[i]->getType() == Custom) {
+					PlatCustom* platCustom = static_cast<PlatCustom*>(table.commande_[i]);
+					os << "\t" << *platCustom;
+				}
 			}
 		}
 		else

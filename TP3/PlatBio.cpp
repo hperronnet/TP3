@@ -1,11 +1,8 @@
 #include "PlatBio.h"
 
-PlatBio::PlatBio(string nom, double prix, double cout, double ecotaxe) : ecoTaxe_(ecotaxe)
+PlatBio::PlatBio(string nom, double prix, double cout, double ecotaxe) : Plat(nom,prix,cout), ecoTaxe_(ecotaxe)
 {
-	//nom_ = nom;
-	//prix_ = prix;
-	//cout_ = cout;
-	ecoTaxe_ = ecotaxe;
+	type_ = Bio;
 }
 
 double PlatBio::getEcoTaxe() const
@@ -21,6 +18,6 @@ void PlatBio::setEcoTaxe(double ecoTaxe)
 ostream & operator<<(ostream & os, const PlatBio & plat)
 {
 	// TODO: insérer une instruction return ici
-	os << static_cast<Plat>(plat) << endl  << "Comprend une taxe écologique de :" << plat.getEcoTaxe();
+	os << static_cast<Plat>(plat) << "Comprend une taxe ecologique de : " << plat.ecoTaxe_ << " $."<< endl;
 	return os;
 }

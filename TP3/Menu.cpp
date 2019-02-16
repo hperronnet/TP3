@@ -25,15 +25,18 @@ Menu::Menu(const Menu & menu): type_(menu.type_)
 	///Modifier
 	for (unsigned i = 0; i < menu.listePlats_.size(); ++i)
 	{
-			if (*menu.listePlats_[i]->getType == Regulier)
-				listePlats_.push_back(new Plat(*menu.listePlats_[i]));
+		if (menu.listePlats_[i]->getType() == Regulier) {
+			listePlats_.push_back(new Plat(*menu.listePlats_[i]));
+		}
 
-			else
-				listePlats_.push_back(new Plat(static_cast<Plat>(*menu.listePlats_[i])));
+		else {
+			PlatBio* platBio = static_cast<PlatBio*>(menu.listePlats_[i]);
+			listePlats_.push_back(new PlatBio(*platBio));
+		}
+
 
 	}
-	return *this;
-	}
+
 }
 
 
@@ -51,14 +54,18 @@ ostream& operator<<(ostream& os, const Menu& menu)
 {
 	for (unsigned i = 0; i < menu.listePlats_.size(); ++i) {
 		
-		if(menu.listePlats_[i]->getType()==Regulier)
+		if (menu.listePlats_[i]->getType() == Regulier)
 			os << "\t" << *menu.listePlats_[i];
-	
-		else if(menu.listePlats_[i]->getType() == Bio)
-			os << "\t" << static_cast<PlatBio*>(menu.listePlats_[i]);
-		
-		else if (menu.listePlats_[i]->getType() == Custom)
-			os << "\t" << static_cast<PlatCustom*>(menu.listePlats_[i]);
+
+		else if (menu.listePlats_[i]->getType() == Bio) {
+			PlatBio* platBio = static_cast<PlatBio*>(menu.listePlats_[i]);
+			os << "\t" << *platBio;
+		}
+		else if (menu.listePlats_[i]->getType() == Custom) {
+			PlatCustom* platCustom = static_cast<PlatCustom*>(menu.listePlats_[i]);
+			os << "\t" << *platCustom;
+		}
+
 	}
 	return os;
 }
@@ -73,8 +80,13 @@ Menu& Menu::operator+=(const Plat& plat) {
 // Nouvelle fonction
 
 Menu& Menu::operator+=(const PlatBio& plat) {
-	listePlats_.push_back(new Plat(plat));
+	listePlats_.push_back(new PlatBio(plat));
 	return *this;
+}
+
+Menu::~Menu() {
+	for (unsigned i = 0; i < listePlats_.size(); i++)
+		delete listePlats_[i];
 }
 
 
@@ -87,15 +99,17 @@ Menu & Menu::operator=(const Menu & menu)
 		this->type_ = menu.type_;
 		listePlats_.clear();
 
-		for (unsigned i = 0; i < menu.listePlats_.size(); ++i)
+		for (unsigned i = 0; i < menu.listePlats_.size(); ++i) {
 
-			if (*menu.listePlats_[i]->getType == Regulier)
+			if (menu.listePlats_[i]->getType() == Regulier) {
 				listePlats_.push_back(new Plat(*menu.listePlats_[i]));
 
-			else if (*menu.listePlats_[i]->getType == Bio)
-				listePlats_.push_back(new Plat(*menu.listePlats_[i]));
-
-
+			}
+			else {
+				PlatBio* platBio = static_cast<PlatBio*>(menu.listePlats_[i]);
+				listePlats_.push_back(new Plat(*platBio));
+			}
+		}
 	}
 	return *this;
 }
@@ -229,7 +243,7 @@ Plat * Menu::trouverPlatMoinsCher() const
 
 	for (unsigned i = 0; i < listePlats_.size(); ++i)
 	{
-		if (*listePlats_[i] < minimum)
+		if (*listePlats_[i] <= minimum)
 		{
 			minimum = *listePlats_[i];
 			found = i;

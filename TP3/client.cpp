@@ -5,11 +5,12 @@ Client::Client()
 	nom_ = "inconnu";
 	prenom_ = "inconnu";
 	statut_ = Occasionnel;
-	tailleGroupe_ = 0;
+	tailleGroupe_ = 1;
 }
 
 Client::Client(string nom, string prenom, int tailleGroupe) : nom_(nom), prenom_(prenom), tailleGroupe_(tailleGroupe)
 {
+	statut_ = Occasionnel;
 }
 
 Client::~Client()
@@ -47,12 +48,12 @@ string Client::convertirStatutString() const
 	case Prestige:
 		return "Prestige";
 	default:
-		break;
+		return "";
 	}
 }
 
 ostream & operator<<(ostream & os, const Client & client)
 {
-	os << " - " << client.nom_ << " " << client.prenom_ << ". Statut : " << client.convertirStatutString();
+	os << " - " << client.nom_ << " " << client.prenom_ << ". Statut : " << client.convertirStatutString() << "." << endl;
 	return os;
 }
