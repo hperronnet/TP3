@@ -41,6 +41,7 @@ int Table::getNbClientsATable() const
 {
 	return nbClientsATable_;
 }
+
 vector<Plat*> Table::getCommande() const
 {
 	return commande_;
@@ -51,12 +52,15 @@ Client * Table::getClientPrincipal() const
 	return clientPrincipal_;
 }
 
-
 //setters
 void Table::setId(int id) {
 	id_ = id;
 }
 
+/*
+* setClientPrincipal : set le client principal d'une table en prenant en compte son statut
+*\param le client principal
+*/
 void Table::setClientPrincipal(Client * clientPrincipal)
 {	
 	if (clientPrincipal->getStatut() == Fidele) {
@@ -72,23 +76,37 @@ void Table::setClientPrincipal(Client * clientPrincipal)
 	}
 }
 
-
+/*
+* libererTable : réinitialise le nombre de clients à table, le nombre de places et vide la commande du/des client(s)
+*/
 void Table::libererTable() {
 	nbPlaces_ += nbClientsATable_;
 	nbClientsATable_ = 0;
 	commande_.clear();
 }
 
+/*
+* placerClient : ajoute un/des client(s) à une table
+* \param le nombre de clients
+*/
 void Table::placerClients(int nbClient) {
 	nbPlaces_ -= nbClient;
 	nbClientsATable_ = nbClient;
 }
 
-//autres methodes
+/*
+* commander : Ajoute un plat à la commande du/des client(s)
+* \param un pointeur vers un plat
+*/
 void Table::commander(Plat* plat) {
 	commande_.push_back(plat);
 }
 
+/*
+* getChiffreAffaire : calcul le chiffre d'affaire créé par la table lorsque celle-ci est libérée en prenant 
+* en compte le type du plat (donc ecoTaxe ou nb d'ingrédients en plus)
+* \return le chiffre d'affaire
+*/
 double Table::getChiffreAffaire() const {
 	///TODO
 	///Modifier pour que le chiffre d'Affaire prenne en compte le type de plat
@@ -109,7 +127,11 @@ double Table::getChiffreAffaire() const {
 	return chiffre;
 }
 
-//affichage
+/*
+* Opérateur d'affichage
+* \param la table à afficher et l'os
+* \return os (ce qui est à afficher)
+*/
 ostream& operator<<(ostream& os, const Table& table)
 {
 	os << "La table numero " << table.id_;

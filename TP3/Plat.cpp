@@ -7,13 +7,11 @@
 #include "Plat.h"
 
 //constructeur 
-
-
 Plat::Plat(string nom , double prix , double cout) : nom_(nom), prix_(prix), cout_(cout), type_(Regulier)
 {
 }
-//getters 
 
+//getters 
 string Plat::getNom() const {
 	return nom_; 
 }
@@ -43,8 +41,12 @@ bool Plat::operator<=(const Plat& plat) const
 	return this->prix_ <= plat.prix_;
 }
 
-//autres methodes
 
+/*
+* Opérateur d'affichage
+* \param le plat à afficher et l'os
+* \return os (ce qui est à afficher)
+*/
 ostream& operator<<(ostream& os, const Plat& plat)
 {
 	os << plat.nom_ << " - " << plat.prix_ << " $ (" << plat.cout_ << "$ pour le restaurant)" << endl;

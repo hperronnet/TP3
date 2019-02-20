@@ -60,9 +60,7 @@ Restaurant::~Restaurant() {
 
 }
 
-
 //setter 
-
 void Restaurant::setMoment(TypeMenu moment) {
 	momentJournee_ = moment; 
 }
@@ -70,6 +68,7 @@ void Restaurant::setNom(const string & nom)
 {
 	nom_ = new string(nom);
 }
+
 //getters 
 string Restaurant::getNom() const {
 	return *nom_; 
@@ -84,23 +83,18 @@ double Restaurant::getFraisTransports(int index) const
 	return fraisTransport_[index];
 }
 
-
-
-//autres methodes 
-
-
-void Restaurant::libererTable(int id) {
-
-	///TODO
-	///Modifier pour prendre en compte les différents types de clients et leurs privilèges
-	///Voir Énoncé
-
+/*
+*  libererTable : libere une table. calcul la réduction du client si il y est éligible.
+* \param l'id de la table
+*/
+void Restaurant::libererTable(int id) 
+{
 	for (unsigned i = 0; i < tables_.size(); ++i) {
 		if (id == tables_[i]->getId()) {
 			double prixTable = tables_[i]->getChiffreAffaire();
 			Client *client = tables_[i]->getClientPrincipal();
 			double reduction = 0.0;
-			if (id = INDEX_TABLE_LIVRAISON) {
+			if (id == INDEX_TABLE_LIVRAISON+1) {
 				reduction = calculerReduction(client, prixTable, true);
 			}
 			else {
@@ -116,7 +110,11 @@ void Restaurant::libererTable(int id) {
 
 
 
-
+/*
+* Opérateur d'affichage
+* \param le restaurant à afficher et l'os
+* \return os (ce qui est à afficher)
+*/
 ostream& operator<<(ostream& os, const Restaurant& restau)
 {
 	os << "Le restaurant " << *restau.nom_;
@@ -147,13 +145,16 @@ ostream& operator<<(ostream& os, const Restaurant& restau)
 }
 
 
-
+/*
+* commanderPlat : cherche le plat commandé avec les ingrédients en plus ou le type si il y en a puis l'ajoute à la commande
+* \param le nom du plat, l'id de la table et (facultatif) le type et le nombre d'ingrédients en plas
+*/
 void Restaurant::commanderPlat(const string& nom, int idTable,TypePlat type, int nbIngredients) {
 
 	///TODO
 	/// Modifier la fonction pour ajouter des plats customisés aux commandes
 	Plat* plat = nullptr; 
-	int index; 
+	int index = 0; 
 	for (unsigned i = 0; i < tables_.size(); i++) {
 		if (idTable == tables_[i]->getId()) {
 			index = i; 
@@ -236,7 +237,7 @@ void Restaurant::lireTable(const string& fichier) {
 		string nbPersonnesString; 
 		int nbPersonnes; 
 
-		int curseur; 
+		int curseur = 0; 
 		while ( !file.eof()) {
 			getline(file, ligne); 
 			if (ligne == "-TABLES") {
@@ -343,7 +344,7 @@ double Restaurant::calculerReduction(Client * client, double montant, bool livra
 	else if (client->getStatut() == Prestige) {
 		ClientPrestige* clientPrestige = static_cast<ClientPrestige*>(client);
 		reduction = (-montant) * TAUX_REDUC_PRESTIGE;
-		if (livraison & clientPrestige->getNbPoints() < SEUIL_LIVRAISON_GRATUITE) {
+		if (livraison & (clientPrestige->getNbPoints() < SEUIL_LIVRAISON_GRATUITE)) {
 			switch (clientPrestige->getAddresseCode())
 			{
 			case Zone1 :
@@ -372,12 +373,12 @@ void Restaurant::lireAdresses(const string & fichier)
 			string ligne;
 
 			string addresseCodeStr;
-			int addressCode;
+			int addressCode = 0;
 
 			string fraisStrg;
 			double frais;
 
-			int curseur;
+			int curseur = 0;
 			while (!file.eof()) {
 				getline(file, ligne);
 				if (ligne == "-ADDRESSES") {

@@ -7,7 +7,6 @@
 #include "Menu.h"
 
 //constructeurs 
-
 Menu::Menu() {
 	type_ = Matin; 
 }
@@ -19,10 +18,9 @@ Menu::Menu(string fichier, TypeMenu type) {
 	lireMenu(fichier); 
 }
 
+//Constructeur par copie
 Menu::Menu(const Menu & menu): type_(menu.type_)
 {
-	///TODO 
-	///Modifier
 	for (unsigned i = 0; i < menu.listePlats_.size(); ++i)
 	{
 		if (menu.listePlats_[i]->getType() == Regulier) {
@@ -39,9 +37,13 @@ Menu::Menu(const Menu & menu): type_(menu.type_)
 
 }
 
+//Destructeur
+Menu::~Menu() {
+	for (unsigned i = 0; i < listePlats_.size(); i++)
+		delete listePlats_[i];
+}
 
 //getters
-
 vector<Plat*> Menu::getListePlats() const
 {
 	return listePlats_;
@@ -49,7 +51,11 @@ vector<Plat*> Menu::getListePlats() const
 
 //autres methodes 
 
-
+/*
+* Opérateur d'affichage
+* \param le menu à afficher et l'os
+* \return os (ce qui est à afficher)
+*/
 ostream& operator<<(ostream& os, const Menu& menu)
 {
 	for (unsigned i = 0; i < menu.listePlats_.size(); ++i) {
@@ -70,30 +76,34 @@ ostream& operator<<(ostream& os, const Menu& menu)
 	return os;
 }
 
-
-
+/*
+* operateur += : Ajoute un plat à la liste de plats du menu
+* \param le plat à ajouter
+* \return La liste de plat (le menu)
+*/
 Menu& Menu::operator+=(const Plat& plat) {
 	listePlats_.push_back(new Plat(plat));
 	return *this;
 }
 
-// Nouvelle fonction
-
+/*
+* operateur += : Ajoute un plat BIO à la liste de plats du menu à l'aide d'un static_cast
+* \param le platBio à ajouter
+* \return La liste de plat (le menu)
+*/
 Menu& Menu::operator+=(const PlatBio& plat) {
 	listePlats_.push_back(new PlatBio(plat));
 	return *this;
 }
 
-Menu::~Menu() {
-	for (unsigned i = 0; i < listePlats_.size(); i++)
-		delete listePlats_[i];
-}
 
-
+/*
+* operateur = : écrase les attributs du menu par les attributs du menu passé en paramètre
+* \param le nouveau menu
+* \return une référence au menu.
+*/
 Menu & Menu::operator=(const Menu & menu)
 {
-	///TODO
-	/// A Modifier
 	if (this != &menu)
 	{
 		this->type_ = menu.type_;
@@ -114,7 +124,10 @@ Menu & Menu::operator=(const Menu & menu)
 	return *this;
 }
 
-
+/*
+* lisreMenu : Lit dans le fichier polyfood.txt et ajoute chacun des plat du menu dans le menu en fonction de sont type (Matin, Midin Soir)
+* \param le fichier contenu les menu, les prix, les tables
+*/
 void Menu::lireMenu(const string& fichier) {
 	ifstream file(fichier, ios::in); 
 
@@ -156,7 +169,7 @@ void Menu::lireMenu(const string& fichier) {
 			if (ligne == type){ 
 				//commencer a lire -- s'arrete si fin du fichier ou encore si on arrive a une nouvelle section du menu 
 				std::getline(file, ligne);
-				int curseur; 
+				int curseur = 0;;
 				while (ligne[0] != '-' && !file.eof()) {
 					//trouver le nom 
 					for (int i = 0; i < int(ligne.size()); i++) {
@@ -236,6 +249,10 @@ void Menu::lireMenu(const string& fichier) {
 	}
 }
 
+/*
+* trouverPlatMoinsCher : parcours le menu et trouve le plat le moins cher pour chaque type de menu (Matin, Midi, Soir)
+/ \return le plat le moins cher
+*/
 Plat * Menu::trouverPlatMoinsCher() const
 {
 	Plat minimum(*listePlats_[0]);
@@ -254,6 +271,11 @@ Plat * Menu::trouverPlatMoinsCher() const
 
 }
 
+/*
+* trouverPlat : trouve un plat dans le menu à partir de son nom
+* \param le nom du plat
+* \return le plat trouvé, ou nullptr si il n'existe pas ou n'est pas trouvé
+*/
 Plat* Menu::trouverPlat(const string& nom) const {
 	for (int i = 0; i < listePlats_.size(); ++i) {
 		if (listePlats_[i]->getNom() == nom)
