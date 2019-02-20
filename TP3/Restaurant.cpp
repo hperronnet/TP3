@@ -196,12 +196,21 @@ void Restaurant::commanderPlat(const string& nom, int idTable,TypePlat type, int
 }
 
 
-
+/*
+* operateur = : écrase les attributs du restaurant par les attributs du restaurant passé en paramètre
+* \param le nouveau menu
+* \return une référence au menu.
+*/
 bool Restaurant::operator<(const Restaurant & restau) const 
 {
 	return this->chiffreAffaire_ < restau.chiffreAffaire_;
 }
 
+/*
+* operateur = :
+* \param le restaurant à comparer au celui actuel
+* \return Vrai si le chiffre d'affaire du restaurant est inférieur à celui du restaurant passé en paramèrte
+*/
 Restaurant & Restaurant::operator=(const Restaurant & restau)
 {
 	if (this != &restau)
@@ -225,6 +234,10 @@ Restaurant & Restaurant::operator=(const Restaurant & restau)
 	return *this;
 }
 
+/*
+* lireTable : Ouvre le fichier entré en paramètre pour lire les tables du restaurant (id, capacité)
+* \param le fichier a ouvrir
+*/
 void Restaurant::lireTable(const string& fichier) {
 	ifstream file(fichier, ios::in); 
 
@@ -268,20 +281,24 @@ void Restaurant::lireTable(const string& fichier) {
 	}
 }
 
+/*
+* Opérateur += : Ajoute une table à la lsite de tables du restaurant
+* \param un pointeur vers une table
+* \return le restaurant modifié
+*/
 Restaurant& Restaurant::operator+=(Table* table) {
 	tables_.push_back(new Table(*table)); 
 	return *this;
 }
 
-void Restaurant::placerClients(Client* client) {
-
-	/// TODO 
-	///Modifier Afin qu'elle utilise un objet de la classe clients 
-	///voir Énoncé
+/*
+* placerClient : Place un client sur une table en fonction de son nombre de places et le nombre de clients
+* \param un pointeur vers un client
+*/
+void Restaurant::placerClients(Client* client) 
+{
 	int indexTable = -1;
 	int minimum = 100;
-
-
 
 	for (unsigned i = 0; i < tables_.size(); i++) {
 		if (tables_[i]->getNbPlaces() >= client->getTailleGroupe() && !tables_[i]->estOccupee() && tables_[i]->getNbPlaces() < minimum && tables_[i]->getId() != 5) {
@@ -298,6 +315,11 @@ void Restaurant::placerClients(Client* client) {
 	}
 }
 
+/*
+* livrerClient : Similaire a la fonction placerClient. Le client qui se fait livré est virtuellement placé sur un table dédié
+* Vérifie d'abord si le client à le statut adéquat pour se faire livrer (Prestige)
+* \param un pointeur vers un client ainsi que sa commande
+*/
 void Restaurant::livrerClient(Client * client, vector<string> commande)
 {
 	cout << "Livraison en cours... " << endl;
@@ -331,6 +353,12 @@ void Restaurant::livrerClient(Client * client, vector<string> commande)
 
 }
 
+/*
+* calculerReduction : Calcule la réduaction du prix de la commande d'un client en fonction de son statut.
+* Si le client se fait livrer, calcul le montant de la livraison
+* \param un pointeur vers un client, le montant de la facture et un bool qui indique si le client se fait livrer ou non
+* \return le montant de la réduction du client
+*/
 double Restaurant::calculerReduction(Client * client, double montant, bool livraison)
 {
 	double reduction = 0.0;			//La réduction doit etre un chiffre négatif : 
@@ -364,7 +392,10 @@ double Restaurant::calculerReduction(Client * client, double montant, bool livra
 	return reduction;
 }
 
-
+/*
+* lireAdresse : lit dans le fichier donné en paramètre les adresses disponible ainsi que le prix de livraison associé
+* \param le fichier à lire
+*/
 void Restaurant::lireAdresses(const string & fichier)
 {
 	ifstream file(fichier, ios::in);

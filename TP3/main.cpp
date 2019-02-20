@@ -99,5 +99,4 @@ int main() {
 	delete cl4;
 	delete cl5;
 
-	system("pause");
 }
