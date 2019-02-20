@@ -18,6 +18,10 @@ public:
 	Table();
 	Table(int id, int nbPlaces);
 
+	//Destructeur
+	~Table();
+
+
 
 	//getters
 	int getId() const;

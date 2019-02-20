@@ -99,4 +99,6 @@ int main() {
 	delete cl4;
 	delete cl5;
 
+	return 0;
+
 }
