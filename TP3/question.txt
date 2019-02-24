@@ -1,0 +1,18 @@
+1. Pourquoi à t’on besoin de l’attribut type_ dans la classe Plat?
+ Que ce serait-il passé s’il n’existait ?
+
+Si l'attribut type_ n'existait pas, il serait impossible de trouver le type de plat du quel il s'agit
+lorsqu'on traite un plat particulier (Bio ou Custom) en ne faisant pas directement référence à celui-ci, 
+mais bien à la classe plat de laquelle il hérite.
+
+2.Quelle est l’importance du static_cast dans la classe Client et ses classes dérivées?
+
+Avoir des static cast nous permet de traiter les différent type de client de manière différente tout en
+les plaçant dans une seule et même liste, c'est à dire dans une liste de client. Ainsi nous pouvons les
+manipuler de la même manière.
+
+3.(bonus)Pourquoi est-il intéressant de dériver ClientPrestige de ClientRégulier? (1pt)
+
+ClientPrestige Possède tous les attributs de ClientRégulier et de Client. Comme ClientRégulier hérite 
+déjà de client, ClientPrestige peut hériter de la somme des attributs et méthodes des deux classe en 
+héritant tout simplement de ClientRégulier.
