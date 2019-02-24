@@ -1,3 +1,10 @@
+/*
+* Titre : PPlatBio.cpp - Travail Pratique #3
+* Date : 24 Février 2019
+* Auteurs : Hugo Perronnet 1885263 - Philippe Maisonneuve 1959052
+*/
+
+
 #include "PlatBio.h"
 
 //Constructeur

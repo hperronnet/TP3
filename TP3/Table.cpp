@@ -1,8 +1,9 @@
 /*
 * Titre : Table.cpp - Travail Pratique #3
-* Date : 11 Février 2019
-* Auteur :Fatou S. MOUNZEO
+* Date : 24 Février 2019
+* Auteurs : Hugo Perronnet 1885263 - Philippe Maisonneuve 1959052
 */
+
 
 #include "Table.h"
 
@@ -108,9 +109,6 @@ void Table::commander(Plat* plat) {
 * \return le chiffre d'affaire
 */
 double Table::getChiffreAffaire() const {
-	///TODO
-	///Modifier pour que le chiffre d'Affaire prenne en compte le type de plat
-	///voir Énoncé
 	double chiffre = 0;
 	for (unsigned i = 0; i < commande_.size(); ++i) {
 		if (commande_[i]->getType() == Bio) {
@@ -150,18 +148,6 @@ ostream& operator<<(ostream& os, const Table& table)
 			os << "Le client principal est : " << *table.clientPrincipal_ << endl;
 		}
 
-
-		//switch (table.getClientPrincipal()->getStatut())
-		//{
-		//case Prestige : 
-		//	os << static_cast<ClientPrestige*>(table.getClientPrincipal());
-		//  break;
-		//case Fidele :
-		//	os << table.getClientPrincipal();
-		//  break;
-		//default:
-		//	break;
-		//}
 		if (!table.commande_.empty())
 		{
 			os << "Voici la commande passee par les clients : " << endl;

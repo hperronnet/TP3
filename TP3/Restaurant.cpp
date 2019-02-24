@@ -1,7 +1,7 @@
 /*
-* Titre : Restaurant.cpp - Travail Pratique #2
-* Date : 11 Février 2019
-* Auteur : Fatou S. MOUNZEO
+* Titre : Restaurant.cpp - Travail Pratique #3
+* Date : 24 Février 2019
+* Auteurs : Hugo Perronnet 1885263 - Philippe Maisonneuve 1959052
 */
 
 #include "Restaurant.h"
@@ -108,8 +108,6 @@ void Restaurant::libererTable(int id)
 	}
 }
 
-
-
 /*
 * Opérateur d'affichage
 * \param le restaurant à afficher et l'os
@@ -119,7 +117,7 @@ ostream& operator<<(ostream& os, const Restaurant& restau)
 {
 	os << "Le restaurant " << *restau.nom_;
 	if (restau.chiffreAffaire_ != 0)
-		os << " a fait un chiffre d'affaire de : " << restau.chiffreAffaire_ << "$" << endl;
+		os << " a fait un chiffre d'affaire de : " << restau.chiffreAffaire_ << "$" << endl << endl;
 	else
 		os << " n'a pas fait de benefice ou le chiffre n'est pas encore calcule." << endl;
 
@@ -151,10 +149,8 @@ ostream& operator<<(ostream& os, const Restaurant& restau)
 */
 void Restaurant::commanderPlat(const string& nom, int idTable,TypePlat type, int nbIngredients) {
 
-	///TODO
-	/// Modifier la fonction pour ajouter des plats customisés aux commandes
 	Plat* plat = nullptr; 
-	int index = 0; 
+	int index = -1; 
 	for (unsigned i = 0; i < tables_.size(); i++) {
 		if (idTable == tables_[i]->getId()) {
 			index = i; 
@@ -173,7 +169,6 @@ void Restaurant::commanderPlat(const string& nom, int idTable,TypePlat type, int
 			break;
 		}
 	}
-	//cout << "debogage:: " << tables_[index]->getClientPrincipal()->getTailleGroupe();
 	
 	if (plat == nullptr || !tables_[index]->estOccupee()) {
 
@@ -183,7 +178,6 @@ void Restaurant::commanderPlat(const string& nom, int idTable,TypePlat type, int
 	{
 		if (type == Custom) {
 			PlatCustom* custom = new PlatCustom(plat->getNom(), plat->getPrix(), plat->getCout(), nbIngredients);
-			//PlatCustom* custom = static_cast<PlatCustom*>(plat);
 			tables_[index]->commander(custom);
 		}
 		else {
@@ -207,9 +201,9 @@ bool Restaurant::operator<(const Restaurant & restau) const
 }
 
 /*
-* operateur = :
-* \param le restaurant à comparer au celui actuel
-* \return Vrai si le chiffre d'affaire du restaurant est inférieur à celui du restaurant passé en paramèrte
+* operateur = : remplace les caratéritiques du restaurant actuel par celles du restaurant passé en paramètre
+* \param le restaurant à écraser
+* \return le restaurant modifié
 */
 Restaurant & Restaurant::operator=(const Restaurant & restau)
 {
@@ -330,7 +324,7 @@ void Restaurant::livrerClient(Client * client, vector<string> commande)
 		tables_[INDEX_TABLE_LIVRAISON]->setClientPrincipal(clientPrestige);
 		tables_[INDEX_TABLE_LIVRAISON]->placerClients(1);
 
-		for (int i = 0; i < commande.size(); i++) {
+		for (unsigned int i = 0; i < commande.size(); i++) {
 			commanderPlat(commande[i], INDEX_TABLE_LIVRAISON+1);
 		}
 
@@ -343,14 +337,6 @@ void Restaurant::livrerClient(Client * client, vector<string> commande)
 	else {
 		cout << "Le client " << client->getNom() << " " << client->getPrenom() << " n'est pas admisible a la livraison." << endl;
 	}
-	
-	///TODO
-	///se réferer à l'énoncé 
-	///vérifier que le client a droit aux livraisons
-	///Si oui lui assigner la table des livraisons 
-	///Effectuer la commande
-
-
 }
 
 /*
@@ -366,12 +352,12 @@ double Restaurant::calculerReduction(Client * client, double montant, bool livra
 	if (client->getStatut() == Fidele) {
 		ClientRegulier* clientRegulier = static_cast<ClientRegulier*>(client);
 		if (clientRegulier->getNbPoints() > SEUIL_DEBUT_REDUCTION) {
-			reduction = (-montant) * TAUX_REDUC_REGULIER;
+			reduction = -montant * TAUX_REDUC_REGULIER;
 		}
 	}
 	else if (client->getStatut() == Prestige) {
 		ClientPrestige* clientPrestige = static_cast<ClientPrestige*>(client);
-		reduction = (-montant) * TAUX_REDUC_PRESTIGE;
+		reduction = -montant * TAUX_REDUC_PRESTIGE;
 		if (livraison & (clientPrestige->getNbPoints() < SEUIL_LIVRAISON_GRATUITE)) {
 			switch (clientPrestige->getAddresseCode())
 			{

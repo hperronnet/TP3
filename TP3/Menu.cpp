@@ -1,8 +1,9 @@
 /*
 * Titre : Menu.cpp - Travail Pratique #3
-* Date : 11 Février 2019
-* Auteur : Fatou S Mounzeo
+* Date : 24 Février 2019
+* Auteurs : Hugo Perronnet 1885263 - Philippe Maisonneuve 1959052
 */
+
 
 #include "Menu.h"
 
@@ -277,7 +278,7 @@ Plat * Menu::trouverPlatMoinsCher() const
 * \return le plat trouvé, ou nullptr si il n'existe pas ou n'est pas trouvé
 */
 Plat* Menu::trouverPlat(const string& nom) const {
-	for (int i = 0; i < listePlats_.size(); ++i) {
+	for (unsigned i = 0; i < listePlats_.size(); ++i) {
 		if (listePlats_[i]->getNom() == nom)
 			return listePlats_[i]; 
 	}

@@ -1,7 +1,7 @@
 /*
 * Titre : Plat.cpp - Travail Pratique #3
-* Date : 18 Janvier 2019
-* Auteur : Allan BEDDOUK
+* Date : 24 Février 2019
+* Auteurs : Hugo Perronnet 1885263 - Philippe Maisonneuve 1959052
 */
 
 #include "Plat.h"

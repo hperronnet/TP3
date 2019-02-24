@@ -42,7 +42,6 @@ public:
 	void commander(Plat* plat);
 
 	//affichage
-	///TODO
 	friend ostream& operator<<(ostream& os, const Table& table); /// A Modifier
 
 private :

@@ -1,8 +1,9 @@
 /*
 * Titre : main.cpp - Travail Pratique #3
-* Date : 11 Février 2019 
-* Auteur : Fatou S. Mounzeo
+* Date : 24 Février 2019
+* Auteurs : Hugo Perronnet 1885263 - Philippe Maisonneuve 1959052
 */
+
 
 #include "Restaurant.h"
 #include "ClientPrestige.h"
@@ -13,12 +14,8 @@ using namespace std;
 int main() {
 
 
-
 	//creation du restaurant 
 	Restaurant poly("polyFood.txt", "PolyFood", Soir); 
-
-	///creer plusieurs clients  
-
 
 	Client * cl1 = new Client("Martin", "b", 1);
 
@@ -42,7 +39,7 @@ int main() {
 
 	//Livrer les clients Marie et Martins
 
-	cout << "\t\t\t\t\tPLACEMENT DES CLIENT" << endl;
+	cout << endl << "\t\t\t\t\tPLACEMENT DES CLIENT" << endl;
 	cout << "--------------------------------------------------------------------------------------------------" << endl;
 
 	//placer les clients 
